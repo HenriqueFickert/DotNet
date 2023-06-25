@@ -1,0 +1,38 @@
+﻿@page
+@model DotNet.Presentation.Pages.RelacionarTurmas.CreateModel
+@{
+    ViewData["Title"] = "Assossiação";
+}
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Cadastrar Aluno à Turma</h2>
+            <hr />
+        </div>
+        <label for="alunoDropdown">Aluno:</label>
+        <select id="alunoDropdown" name="AlunoTurma.AlunoSelecionadoId" class="form-control mb-4">
+            @foreach (var aluno in Model.Alunos)
+            {
+                <option value="@aluno.Id">@aluno.Nome</option>
+            }
+        </select>
+
+        <label for="turmaDropdown">Turma:</label>
+        <select id="turmaDropdown" name="AlunoTurma.TurmaSelecionadaId" class="form-control mb-4">
+            @foreach (var turma in Model.Turmas)
+            {
+                <option value="@turma.Id">@turma.Nome</option>
+            }
+        </select>
+
+        <button type="submit" class="btn btn-primary" style="width:150px">Cadastrar</button>
+        <a asp-page="Index" class="btn btn-secondary" style="width:150px">Voltar</a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

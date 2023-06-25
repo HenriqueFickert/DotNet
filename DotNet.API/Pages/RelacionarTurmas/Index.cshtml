@@ -1,0 +1,75 @@
+﻿@page
+@using DotNet.Domain.Enums;
+@model DotNet.Presentation.Pages.RelacionarTurmas.IndexModel
+@{
+    ViewData["Title"] = "Relacionar Turmas";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <h2 class="text-primary">Relacionar Turmas</h2>
+        </div>
+    </div>
+    <div class="row pt-4 d-flex">
+        <div class="col-6 d-flex justify-content-start">
+             <a asp-page="Create" class="btn btn-primary">Adicionar aluno à turma</a>
+        </div>
+    </div>
+
+    <br /> <br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th> Nome</th>
+                <th>Curso Id</th>
+                <th>Ano</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.Turmas)
+            {
+                <tr>
+                    <td width="10%" class="align-middle">@obj.Id</td>
+                    <td width="40%" class="align-middle">@obj.Nome</td>
+                    <td width="10%" class="align-middle">@obj.CursoId</td>
+                    <td width="10%" class="align-middle">@obj.Ano</td>
+                    <td width="10%" class="align-middle">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                            <div class="mx-5">
+                                @obj.Status
+                            </div>
+                        </div>
+                    </td>
+                    <td width="10%" class="align-middle">
+                        <div class="w-75 btn-group">
+                            <a asp-page="TurmaAlunos" asp-route-id="@obj.Id" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.TableData.TotalPaginas > 1)
+    {
+        <div class="btn-group w-75 pt-4 align-items-center">
+            <form method="get">
+                <button class="btn btn-primary mx-2" type="submit" @(Model.TableData.ExistePaginaAnterior ? "" : "disabled")>Anterior</button>
+                <input type="hidden" name="pageNumber" value="@(Model.PageNumber - 1)" />
+            </form>
+
+            <span class="mx-2">@Model.PageNumber</span>
+
+            <form method="get">
+                <button class="btn btn-primary mx-2" type="submit" @(Model.TableData.ExistePaginaPosterior ? "" : "disabled")>Próximo</button>
+                <input type="hidden" name="pageNumber" value="@(Model.PageNumber + 1)" />
+            </form>
+        </div>
+    }
+
+</div>

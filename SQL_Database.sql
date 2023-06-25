@@ -1,0 +1,40 @@
+CREATE DATABASE RazorDotNet;
+go
+
+USE RazorDotNet;
+go
+
+CREATE TABLE [dbo].[Alunos]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[Nome] VARCHAR(255) NOT NULL,
+	[Usuario] VARCHAR(45) NOT NULL,
+	[Senha] CHAR(60) NOT NULL,
+	[Status] VARCHAR(25) NOT NULL DEFAULT ('Ativo'),
+	[CriadoEm] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+	[AlteradoEm] DATETIME2 NULL
+
+	CONSTRAINT [PK_Alunos] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[Turmas] (
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[CursoId] INT NOT NULL,
+	[Turma] VARCHAR(45) NOT NULL,
+	[Ano] INT NOT NULL,
+	[Status] VARCHAR(25) NOT NULL DEFAULT ('Ativo'),
+	[CriadoEm] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+	[AlteradoEm] DATETIME2 NULL
+
+	CONSTRAINT [PK_Turmas] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[AlunosTurmas] (
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[AlunoId] INT NOT NULL,
+	[TurmaId] INT NOT NULL,
+
+	CONSTRAINT [PK_UsuariosDepartamentos] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_UsuariosDepartamentos_Usuarios] FOREIGN KEY ([AlunoId]) REFERENCES [dbo].[Alunos] ([Id]) ON DELETE CASCADE,
+	CONSTRAINT [FK_UsuariosDepartamentos_Departamentos] FOREIGN KEY ([TurmaId]) REFERENCES [dbo].[Turmas] ([Id]) ON DELETE CASCADE
+);

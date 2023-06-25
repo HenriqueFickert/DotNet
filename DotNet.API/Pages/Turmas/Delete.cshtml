@@ -1,0 +1,40 @@
+﻿@page
+@model DotNet.Presentation.Pages.Turmas.DeleteModel
+@{
+    ViewData["Title"] = "Remover Turma";
+}
+
+<form method="post">
+    <input hidden asp-for="Turma.Id" />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Remover Turma</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.Nome"></label>
+            <input asp-for="Turma.Nome" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.CursoId"></label>
+            <input asp-for="Turma.CursoId" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.Ano"></label>
+            <input asp-for="Turma.Ano" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.Status"></label>
+            <input asp-for="Turma.Status" disabled class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:150px">Remover</button>
+        <a asp-page="Index" class="btn btn-secondary" style="width:150px">Voltar</a>
+    </div>
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

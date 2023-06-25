@@ -1,0 +1,86 @@
+﻿@page
+@using DotNet.Domain.Enums;
+@model DotNet.Presentation.Pages.Alunos.IndexModel
+@{
+    ViewData["Title"] = "Alunos";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <h2 class="text-primary">Alunos</h2>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col-12">
+            <a asp-page="create" class="btn btn-primary">Adicionar Aluno</a>
+        </div>
+    </div>
+
+    <br /> <br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th> Nome</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.Alunos)
+            {
+                <tr>
+                    <td width="20%" class="align-middle">@obj.Id</td>
+                    <td width="50%" class="align-middle">@obj.Nome</td>
+                    <td width="20%" class="align-middle">
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                            <div class="mx-5">
+                                @obj.Status
+                            </div>
+                            @{
+                                string statusName = Enum.GetName(typeof(EStatus), obj.Status);
+                                bool isChecked = (statusName == "Ativo");
+                            }
+
+                            <form method="post">
+                                <input type="hidden" name="objectId" value="@obj.Id">
+                                <input type="hidden" name="status" value="@obj.Status.ToString()">
+                                <input type="hidden" name="pageNumber" value="@Model.PageNumber">
+                                <label for="customCheck1">
+                                    <input type="checkbox" class="custom-control-input" @(isChecked ? "checked" : "") onchange="this.form.submit()">
+                                    <span class="custom-control-label"></span>
+                                </label>
+                            </form>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <div class="w-75 btn-group">
+                            <a asp-page="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2"><i class="bi bi-pencil"></i></a>
+                            <a asp-page="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.TableData.TotalPaginas > 1)
+    {
+        <div class="btn-group w-75 pt-4 align-items-center">
+            <form method="get">
+                <button class="btn btn-primary mx-2" type="submit" @(Model.TableData.ExistePaginaAnterior ? "" : "disabled")>Anterior</button>
+                <input type="hidden" name="pageNumber" value="@(Model.PageNumber - 1)" />
+            </form>
+
+            <span class="mx-2">@Model.PageNumber</span>
+
+            <form method="get">
+                <button class="btn btn-primary mx-2" type="submit" @(Model.TableData.ExistePaginaPosterior ? "" : "disabled")>Próximo</button>
+                <input type="hidden" name="pageNumber" value="@(Model.PageNumber + 1)" />
+            </form>
+        </div>
+    }
+</div>

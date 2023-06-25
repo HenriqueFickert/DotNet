@@ -1,0 +1,36 @@
+﻿@page
+@model DotNet.Presentation.Pages.Alunos.DeleteModel
+@{
+    ViewData["Title"] = "Remover Aluno";
+}
+
+<form method="post">
+    <input hidden asp-for="Aluno.Id" />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Remover Aluno</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Nome"></label>
+            <input asp-for="Aluno.Nome" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Usuario"></label>
+            <input asp-for="Aluno.Usuario" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Status"></label>
+            <input asp-for="Aluno.Status" disabled class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:150px">Remover</button>
+        <a asp-page="Index" class="btn btn-secondary" style="width:150px">Voltar</a>
+    </div>
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

@@ -1,0 +1,40 @@
+﻿@page
+@using DotNet.Application.Dtos.Aluno;
+@model DotNet.Presentation.Pages.Turmas.CreateModel
+@{
+    ViewData["Title"] = "Cadastrar Turma";
+}
+
+<form method="post">
+
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Cadastrar Aluno</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.Nome"></label>
+            <input asp-for="Turma.Nome" class="form-control" />
+            <span asp-validation-for="Turma.Nome" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.CursoId"></label>
+            <input asp-for="Turma.CursoId" class="form-control" pattern="[0-9]*" inputmode="numeric" />
+            <span asp-validation-for="Turma.CursoId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Turma.Ano"></label>
+            <input type="text" asp-for="Turma.Ano" class="form-control" maxlength="4" pattern="[0-9]*" inputmode="numeric" />
+            <span asp-validation-for="Turma.Ano" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Cadastrar</button>
+        <a asp-page="Index" class="btn btn-secondary" style="width:150px">Voltar</a>
+    </div>
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

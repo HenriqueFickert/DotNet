@@ -1,0 +1,45 @@
+﻿@page
+@model DotNet.Presentation.Pages.Alunos.EditModel
+@{
+    ViewData["Title"] = "Editar Aluno";
+}
+
+<form method="post">
+    <input hidden asp-for="Aluno.Id" />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Editar Aluno</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Nome"></label>
+            <input asp-for="Aluno.Nome" class="form-control" />
+            <span asp-validation-for="Aluno.Nome" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Usuario"></label>
+            <input asp-for="Aluno.Usuario" class="form-control" />
+            <span asp-validation-for="Aluno.Usuario" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.Senha"></label>
+            <input type="password" asp-for="Aluno.Senha" class="form-control" />
+            <span asp-validation-for="Aluno.Senha" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aluno.ConfirmarSenha"></label>
+            <input type="password" asp-for="Aluno.ConfirmarSenha" class="form-control" />
+            <span asp-validation-for="Aluno.ConfirmarSenha" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Editar</button>
+        <a asp-page="Index" class="btn btn-secondary" style="width:150px">Voltar</a>
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+    </div>
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
