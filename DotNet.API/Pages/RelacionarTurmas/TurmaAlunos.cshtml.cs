@@ -32,17 +32,15 @@ namespace DotNet.Presentation.Pages.RelacionarTurmas
 
             ViewEntityPaginationDto<Turma, ViewTurmaDetailsDto> entityPaged = await _turmaApplication.GetDetails(id, PageNumber, PageSize);
 
-            TableData = entityPaged.Dados;
-            Turma = entityPaged.View;
-
             if (_notifier.HasAnyError())
             {
                 TempData["error"] = _notifier.GetAllNotifications().FirstOrDefault().Message;
-
                 _notifier.ClearErrors();
                 return RedirectToPage("../Index");
             }
 
+            TableData = entityPaged.Dados;
+            Turma = entityPaged.View;
             return Page();
         }
     }

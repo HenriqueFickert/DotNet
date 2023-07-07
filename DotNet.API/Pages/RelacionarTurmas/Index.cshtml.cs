@@ -51,15 +51,16 @@ namespace DotNet.Presentation.Pages.RelacionarTurmas
         private async Task<IActionResult> GetData()
         {
             ViewPaginationDto<Turma, ViewTurmaDto> pagedList = await _turmaApplication.GetAllPaginated(PageNumber, PageSize);
-            TableData = pagedList.Dados;
-            Turmas = pagedList.Pagina;
 
             if (_notifier.HasAnyError())
             {
+                TempData["error"] = _notifier.GetAllNotifications().FirstOrDefault().Message;
                 _notifier.ClearErrors();
                 return RedirectToPage("../Index");
             }
 
+            TableData = pagedList.Dados;
+            Turmas = pagedList.Pagina;
             return Page();
         }
     }

@@ -51,15 +51,16 @@ namespace DotNet.Presentation.Pages.Alunos
         private async Task<IActionResult> GetData()
         {
             ViewPaginationDto<Aluno, ViewAlunoDto> pagedList = await _alunoApplication.GetAllPaginated(PageNumber, PageSize);
-            TableData = pagedList.Dados;
-            Alunos = pagedList.Pagina;
 
             if (_notifier.HasAnyError())
             {
+                TempData["error"] = _notifier.GetAllNotifications().FirstOrDefault().Message;
                 _notifier.ClearErrors();
                 return RedirectToPage("../Index");
             }
 
+            TableData = pagedList.Dados;
+            Alunos = pagedList.Pagina;
             return Page();
         }
     }

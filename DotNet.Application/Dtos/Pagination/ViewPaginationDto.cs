@@ -7,7 +7,7 @@ namespace DotNet.Application.Dtos.Pagination
     {
         public ICollection<TView> Pagina { get; set; }
 
-        public ViewPaginationDataDto<TEntity> Dados { get; set; }
+        public ViewPaginationDataDto<TEntity> Dados;
 
         public ViewPaginationDto(PagedList<TEntity> pagedList, List<TView> list)
         {

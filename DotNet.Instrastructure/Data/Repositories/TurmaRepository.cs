@@ -119,101 +119,133 @@ namespace DotNet.Instrastructure.Data.Repositories
 
         public async Task<Turma> Post(Turma turma)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    turma.Id = await sqlConnection.ExecuteScalarAsync<int>(TurmaScript.Post, turma, transaction);
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        turma.Id = await sqlConnection.ExecuteScalarAsync<int>(TurmaScript.Post, turma, transaction);
 
-                    if (turma.Id == 0)
-                        AddNotification("Falha ao inserir a turma.");
+                        if (turma.Id == 0)
+                            AddNotification("Falha ao inserir a turma.");
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return turma;
         }
 
         public async Task<Turma> Put(Turma turma)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(TurmaScript.Put, turma, transaction) > 0;
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        bool result = await sqlConnection.ExecuteAsync(TurmaScript.Put, turma, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao atualizar a turma.");
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        if (!result)
+                            AddNotification("Falha ao atualizar a turma.");
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return turma;
         }
 
         public async Task<bool> PutStatus(Turma turma)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(TurmaScript.PutStatus, turma, transaction) > 0;
-                    transaction.Commit();
-
-                    if (!result)
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
                     {
-                        AddNotification("Falha ao atualizar o status da turma.");
-                        return false;
-                    }
+                        bool result = await sqlConnection.ExecuteAsync(TurmaScript.PutStatus, turma, transaction) > 0;
+                        transaction.Commit();
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        if (!result)
+                        {
+                            AddNotification("Falha ao atualizar o status da turma.");
+                            return false;
+                        }
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return false;
         }
 
         public async Task<bool> Delete(int id)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(TurmaScript.Delete, new { Id = id }, transaction) > 0;
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        bool result = await sqlConnection.ExecuteAsync(TurmaScript.Delete, new { Id = id }, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao remover a turma.");
+                        if (!result)
+                            AddNotification("Falha ao remover a turma.");
 
-                    return result;
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+                return false;
             }
         }
 

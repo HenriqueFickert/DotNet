@@ -81,153 +81,201 @@ namespace DotNet.Instrastructure.Data.Repositories
 
         public async Task<Aluno> Post(Aluno aluno)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    aluno.Id = await sqlConnection.ExecuteScalarAsync<int>(AlunoScript.Post, aluno, transaction);
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        aluno.Id = await sqlConnection.ExecuteScalarAsync<int>(AlunoScript.Post, aluno, transaction);
+                        transaction.Commit();
 
-                    if (aluno.Id == 0)
-                        AddNotification("Falha ao inserir o aluno.");
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        if (aluno.Id == 0)
+                            AddNotification("Falha ao inserir o aluno.");
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return aluno;
         }
 
         public async Task<Aluno> Put(Aluno aluno)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(AlunoScript.Put, aluno, transaction) > 0;
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        bool result = await sqlConnection.ExecuteAsync(AlunoScript.Put, aluno, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao atualizar o aluno.");
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        if (!result)
+                            AddNotification("Falha ao atualizar o aluno.");
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return aluno;
         }
 
         public async Task<bool> PutStatus(Aluno aluno)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(AlunoScript.PutStatus, aluno, transaction) > 0;
-                    transaction.Commit();
-
-                    if (!result)
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
                     {
-                        AddNotification("Falha ao atualizar o status do aluno.");
-                        return false;
-                    }
+                        bool result = await sqlConnection.ExecuteAsync(AlunoScript.PutStatus, aluno, transaction) > 0;
+                        transaction.Commit();
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
+                        if (!result)
+                        {
+                            AddNotification("Falha ao atualizar o status do aluno.");
+                            return false;
+                        }
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+            }
+
             return false;
         }
 
         public async Task<bool> Delete(int id)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    bool result = await sqlConnection.ExecuteAsync(AlunoScript.Delete, new { Id = id }, transaction) > 0;
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        bool result = await sqlConnection.ExecuteAsync(AlunoScript.Delete, new { Id = id }, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao remover o aluno.");
+                        if (!result)
+                            AddNotification("Falha ao remover o aluno.");
 
-                    return result;
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+                return false;
             }
         }
 
         public async Task<bool> InsertAlunoTurma(int alunoId, int turmaId)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    var parameters = new { AlunoId = alunoId, TurmaId = turmaId };
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        var parameters = new { AlunoId = alunoId, TurmaId = turmaId };
 
-                    bool result = await sqlConnection.ExecuteScalarAsync<int>(AlunoTurmaScript.InsertAlunoTurma, parameters, transaction) > 0;
-                    transaction.Commit();
+                        bool result = await sqlConnection.ExecuteScalarAsync<int>(AlunoTurmaScript.InsertAlunoTurma, parameters, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao inserir o aluno a turma.");
+                        if (!result)
+                            AddNotification("Falha ao inserir o aluno a turma.");
 
-                    return result;
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+                return false;
             }
         }
 
         public async Task<bool> DeleteAlunoTurma(int alunoId, int turmaId)
         {
-            using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
+            try
             {
-                await sqlConnection.OpenAsync();
-                using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
-                try
+                using (sqlConnection = new SqlConnection(_configuration.GetConnectionString("Connection")))
                 {
-                    var parameters = new { AlunoId = alunoId, TurmaId = turmaId };
-                    bool result = await sqlConnection.ExecuteAsync(AlunoTurmaScript.Delete, parameters, transaction) > 0;
-                    transaction.Commit();
+                    await sqlConnection.OpenAsync();
+                    using DbTransaction transaction = await sqlConnection.BeginTransactionAsync();
+                    try
+                    {
+                        var parameters = new { AlunoId = alunoId, TurmaId = turmaId };
+                        bool result = await sqlConnection.ExecuteAsync(AlunoTurmaScript.Delete, parameters, transaction) > 0;
+                        transaction.Commit();
 
-                    if (!result)
-                        AddNotification("Falha ao desassociar o aluno de turma.");
+                        if (!result)
+                            AddNotification("Falha ao desassociar o aluno de turma.");
 
-                    return result;
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        RequisitionError(ex);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    RequisitionError(ex);
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                RequisitionError(ex);
+                return false;
             }
         }
 

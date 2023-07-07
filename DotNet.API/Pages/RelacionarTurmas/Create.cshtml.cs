@@ -68,6 +68,7 @@ namespace DotNet.Presentation.Pages.RelacionarTurmas
 
             if (_notifier.HasAnyError())
             {
+                TempData["error"] = _notifier.GetAllNotifications().FirstOrDefault().Message;
                 _notifier.ClearErrors();
                 return RedirectToPage("../Index");
             }
