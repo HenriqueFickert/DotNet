@@ -1,2 +1,2 @@
 # DotNet
-Aplicação utilizando .NET e Razor
+Application using .Net 6.0, Dapper and Razor Pages.
